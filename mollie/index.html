@@ -14,8 +14,9 @@
   <p>This button will first contact the Mollie API to create a payment</p>
   <p>On this call, we specify the amount and the currency aswell as a description of the payment. The description is most likely not neccesary.</p>
   <p>We also specify a redirectUrl and webhookUrl</p>
-  <p>&Tab;The redirectUrl will be used to send you back to our site after successfull payment.</p>
-  <p>&Tab;The webhookUrl is used by mollie to send us live updates on your payment process, this gives us insights on when u go to the next step, i.e. authorization.</p>
+  <p>The redirectUrl will be used to send you back to our site after successfull payment.</p>
+  <p>The webhookUrl is used by mollie to send us live updates on your payment process, this gives us insights on when an important step is completed/started by you.</p>
+  <p>The webhookUrl is not used in this example, but it is a good practice to implement it.</p>
   <p>After we successfully receive the payment link, we will redirect you there so that you can pay.</p>
 
   <a href="http://localhost:4001/payment/start" class="btn btn-primmary">Pay Now!</a>
