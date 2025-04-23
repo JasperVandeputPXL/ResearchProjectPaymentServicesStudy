@@ -4,6 +4,20 @@
 ## Payment Service Providers:
 ### - [Mollie](https://www.mollie.com/)
 
+#### How to run the POC:
+
+- open the `mollie` directory in a browser
+
+```
+cd mollie_backend
+```
+```
+npm install
+```
+```
+node .
+```
+
 ### - [Adyen](https://www.adyen.com/)
 
 ### - [Stripe](https://stripe.com/)
