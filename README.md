@@ -22,6 +22,18 @@ node .
 
 ### - [Stripe](https://stripe.com/)
 
+#### How to run the POC:
+
+- open the `stripe/server` directory in a browser
+```
+cd .\stripe\server\
+```
+- run the command to start the server
+```
+npm run devStart
+```
+- surf to: http://localhost:3000/
+
 ### - [Stancer](https://stancer.com/)
 
 ### - [SumUp](https://www.sumup.com/)
