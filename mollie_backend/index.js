@@ -23,9 +23,11 @@ app.get('/payment/start', async (req, res) => {
       description: 'My first API payment',
       redirectUrl: 'http://localhost:4001/payment/complete/' + paymentId,
       /*webhookUrl: 'http://localhost/payment/webhook', not possible see below*/
+      cancelUrl: 'http://localhost:4001/payment/cancel/' + paymentId,
     });
 
     payments.set(paymentId, payment.id);
+    console.log('Payment created:', paymentId);
 
     if (payment.getCheckoutUrl() != null) {
       res.redirect(payment.getCheckoutUrl());
@@ -37,20 +39,6 @@ app.get('/payment/start', async (req, res) => {
     res.status(500).send('Error creating payment');
   }
 });
-
-/*
- * not possible due to not having a domain/public API and
- * a server that hosts the script
-app.post('/payment/webhook', async (req, res) => {
-  const { id } = req.query;
-  const payment = await mollieClient.payments.get(id)
-
-  console.log('Webhook received for payment:', id);
-  console.log(payment);
-
-  res.status(200).end();
-});
-*/
 
 app.get('/payment/complete/:id', (req, res) => {
   const id = payments.get(req.params.id);
@@ -65,6 +53,30 @@ app.get('/payment/complete/:id', (req, res) => {
       console.log('Payment successful!', id);
       payments.delete(req.params.id);
       res.status(200);
+    } else {
+      console.log('Payment has failed or is still pending.', id);
+      res.status(400);
+    }
+    res.send('Payment status checked. Check console for details.').end();
+  }).catch((error) => {
+    console.error(error);
+    res.status(500).send('Error retrieving payment status');
+  });
+});
+
+app.get('/payment/cancel/:id', (req, res) => {
+  const id = payments.get(req.params.id);
+  if (!id) {
+    return res.status(404).send('Payment not found');
+  }
+
+  mollieClient.payments.get(id).then((payment) => {
+    console.log(payment);
+
+    if (payment.status === 'cancelled') {
+      console.log('Payment cancelled!', id);
+      payments.delete(req.params.id);
+      res.status(200).send('Payment cancelled successfully!');
     } else {
       console.log('Payment has failed or is still pending.', id);
       res.status(400);
