@@ -18,8 +18,6 @@ npm install
 node .
 ```
 
-### - [Adyen](https://www.adyen.com/)
-
 ### - [Stripe](https://stripe.com/)
 
 #### How to run the POC:
@@ -33,7 +31,3 @@ cd .\stripe\server\
 npm run devStart
 ```
 - surf to: http://localhost:3000/
-
-### - [Stancer](https://stancer.com/)
-
-### - [SumUp](https://www.sumup.com/)
