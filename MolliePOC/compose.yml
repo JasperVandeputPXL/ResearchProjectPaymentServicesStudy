@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build: ./mollie
+    ports:
+      - 80:80
+  
+  backend:
+    build: ./mollie_backend
+    ports:
+      - 4001:4001
