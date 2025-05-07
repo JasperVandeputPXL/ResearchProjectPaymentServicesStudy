@@ -1,0 +1,13 @@
+services:
+  mollie_front:
+    build: ./MolliePOC/mollie
+    ports:
+      - 80:80
+  mollie_back:
+    build: ./MolliePOC/mollie_backend
+    ports:
+      - 4001:4001
+  stripe:
+    build: ./StripePOC
+    ports:
+      - 3000:3000
