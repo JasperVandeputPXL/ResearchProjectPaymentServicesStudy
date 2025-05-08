@@ -20,10 +20,18 @@ app.get('/payment/start', async (req, res) => {
     const paymentId = uuidv4();
     
     const storeItems = [
-      { description: 'Item 1', unitPrice: {currency: 'EUR', value: "10.00"}, quantity: 1, totalAmount: {currency: 'EUR', value: "10.00"}},
+      { description: 'Mosselen met frietjes', unitPrice: {currency: 'EUR', value: "20.00"},
+        quantity: 4, totalAmount: {currency: 'EUR', value: "80.00"}
+      },
+      { description: 'Videe met frietjes', unitPrice: {currency: 'EUR', value: "15.00"},
+        quantity: 2, totalAmount: {currency: 'EUR', value: "30.00"}
+      },
+      { description: 'Curryworst met frietjes', unitPrice: {currency: 'EUR', value: "12.00"},
+        quantity: 1, totalAmount: {currency: 'EUR', value: "12.00"}
+      },
     ];
     const payment = await mollieClient.payments.create({
-      amount: { value: '10.00', currency: 'EUR' },
+      amount: { value: '122.00', currency: 'EUR' },
       description: 'My first API payment',
       redirectUrl: 'http://localhost:4001/payment/complete/' + paymentId,
       /*webhookUrl: 'http://localhost/payment/webhook', not possible see below*/

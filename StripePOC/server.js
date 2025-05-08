@@ -38,6 +38,7 @@ app.post('/create-checkout-session', async (req, res) => {
             // TODO: change localhost to .env path
             success_url: 'http://localhost:3000/success.html',
             cancel_url: 'http://localhost:3000/cancel.html',
+            customer_email: "voornaam.achternaam@gmail.com",
         });
         res.json({ url: session.url })
     }catch(e){
