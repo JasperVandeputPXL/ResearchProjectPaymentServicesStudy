@@ -18,12 +18,17 @@ app.get('/', (req, res) => {
 app.get('/payment/start', async (req, res) => {
   try {
     const paymentId = uuidv4();
+    
+    const storeItems = [
+      { description: 'Item 1', unitPrice: {currency: 'EUR', value: "10.00"}, quantity: 1, totalAmount: {currency: 'EUR', value: "10.00"}},
+    ];
     const payment = await mollieClient.payments.create({
       amount: { value: '10.00', currency: 'EUR' },
       description: 'My first API payment',
       redirectUrl: 'http://localhost:4001/payment/complete/' + paymentId,
       /*webhookUrl: 'http://localhost/payment/webhook', not possible see below*/
       cancelUrl: 'http://localhost:4001/payment/cancel/' + paymentId,
+      lines: storeItems
     });
 
     payments.set(paymentId, payment.id);
@@ -52,36 +57,11 @@ app.get('/payment/complete/:id', (req, res) => {
     if (payment.status === 'paid') {
       console.log('Payment successful!', id);
       payments.delete(req.params.id);
-      res.status(200);
+      res.status(200).send("payment succeeded").end();
     } else {
       console.log('Payment has failed or is still pending.', id);
-      res.status(400);
+      res.status(400).send("payment failed").end();
     }
-    res.send('Payment status checked. Check console for details.').end();
-  }).catch((error) => {
-    console.error(error);
-    res.status(500).send('Error retrieving payment status');
-  });
-});
-
-app.get('/payment/cancel/:id', (req, res) => {
-  const id = payments.get(req.params.id);
-  if (!id) {
-    return res.status(404).send('Payment not found');
-  }
-
-  mollieClient.payments.get(id).then((payment) => {
-    console.log(payment);
-
-    if (payment.status === 'cancelled') {
-      console.log('Payment cancelled!', id);
-      payments.delete(req.params.id);
-      res.status(200).send('Payment cancelled successfully!');
-    } else {
-      console.log('Payment has failed or is still pending.', id);
-      res.status(400);
-    }
-    res.send('Payment status checked. Check console for details.').end();
   }).catch((error) => {
     console.error(error);
     res.status(500).send('Error retrieving payment status');

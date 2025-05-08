@@ -20,7 +20,7 @@ const storeItems = new Map([
 app.post('/create-checkout-session', async (req, res) => {
     try{
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['bancontact', 'ideal'],
+            payment_method_types: ['card', 'bancontact'],
             mode: 'payment',
             line_items: req.body.items.map(item => {
                 const storeItem = storeItems.get(item.id)
