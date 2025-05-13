@@ -1,5 +1,5 @@
 // een bestelling zoals ze van de java-backend zou komen als DTO:
-const order = {
+let order = {
     id: 1,
     lastName: "Familienaam",
     firstName: "Voornaam",
@@ -46,13 +46,11 @@ function createPaymentObject(placedOrder) {
 }
 
 app.get('/payment/start', async (req, res) => {
-    console.log(req.body)
-    try{
-        const session = await stripe.checkout.sessions.create(createPaymentObject(req.body.order ? req.body.order : order));
-        res.redirect(302, session.url);
-    } catch(e){
-        res.redirect(302, 'http://localhost:80');
+    if (req.body && req.body.hasOwnProperty("order")) {
+        order = req.body.order;
     }
+    const session = await stripe.checkout.sessions.create(createPaymentObject(order));
+    res.redirect(302, session.url);
 })
 
-app.listen(port);
+app.listen(4000);

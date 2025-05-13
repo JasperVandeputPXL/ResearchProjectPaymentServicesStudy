@@ -1,5 +1,5 @@
 // een bestelling zoals ze van de java-backend zou komen als DTO:
-const order = {
+let order = {
     id: 1,
     lastName: "Familienaam",
     firstName: "Voornaam",
@@ -16,7 +16,6 @@ const order = {
 // expressJS opzet
 import express from 'express';
 const app = express();
-const port = 4001;
 app.use(express.json());
 
 // mollie client opzetten
@@ -43,9 +42,12 @@ function createPaymentObject(placedOrder) {
   }
 }
 
-app.get('/payment/start', async (req, res) => {
-    const payment = await mollieClient.payments.create(createPaymentObject(req.body.order ? req.body.order : order));
-    res.redirect(payment.getCheckoutUrl()).send();
+app.get('/payment/start', async (req, res) => {    
+    if (req.body && req.body.hasOwnProperty("order")) {
+        order = req.body.order;
+    }
+    const payment = await mollieClient.payments.create(createPaymentObject(order));
+    res.redirect(302, payment.getCheckoutUrl());
 });
 
-app.listen(port);
+app.listen(4001);

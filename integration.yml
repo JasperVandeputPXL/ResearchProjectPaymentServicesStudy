@@ -1,0 +1,9 @@
+services:
+  mollie-integration:
+    build: ./MolliePOC
+    ports:
+      - 3001:4001
+  stripe-integration:
+    build: ./StripePOC
+    ports:
+      - 3000:4000
