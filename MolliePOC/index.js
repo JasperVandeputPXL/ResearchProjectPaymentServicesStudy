@@ -44,7 +44,7 @@ function createPaymentObject(placedOrder) {
 }
 
 app.get('/payment/start', async (req, res) => {
-    const payment = await mollieClient.payments.create(createPaymentObject(order));
+    const payment = await mollieClient.payments.create(createPaymentObject(req.body.order ? req.body.order : order));
     res.redirect(payment.getCheckoutUrl()).send();
 });
 

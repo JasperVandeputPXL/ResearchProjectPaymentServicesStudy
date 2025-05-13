@@ -46,11 +46,12 @@ function createPaymentObject(placedOrder) {
 }
 
 app.get('/payment/start', async (req, res) => {
+    console.log(req.body)
     try{
-        const session = await stripe.checkout.sessions.create(createPaymentObject(order));
-        res.redirect(session.url)
+        const session = await stripe.checkout.sessions.create(createPaymentObject(req.body.order ? req.body.order : order));
+        res.redirect(302, session.url);
     } catch(e){
-        res.status(500).redirect('http://localhost:80');
+        res.redirect(302, 'http://localhost:80');
     }
 })
 
